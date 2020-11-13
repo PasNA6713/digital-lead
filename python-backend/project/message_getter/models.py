@@ -18,10 +18,9 @@ class UserIdentifierModel(models.Model):
 
 
 class MessageModel(models.Model):
-
     text = models.TextField()
     author = models.ForeignKey(UserIdentifierModel, on_delete=models.CASCADE)
-    date = models.DateField(auto_now_add = True)
+    date = models.DateTimeField(auto_now_add = True)
 
     danger_level = models.IntegerField(null=True, blank=True)
     event_class = models.CharField(max_length=30, null=True, blank=True)

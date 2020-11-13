@@ -7,6 +7,7 @@ from .model import classify as Ml
 
 from loguru import logger
 
+
 class GetMessageSerializer(serializers.ModelSerializer):
     class Meta:
         model = MessageModel
@@ -26,34 +27,17 @@ class UserField(serializers.Field):
     def to_representation(self, value):
         return value
 
-class EventField(serializers.Field):
-    def to_internal_value(self, data):
-        logger.debug(data)
-        return Ml.classify(data)
-
-    def to_representation(self, value):
-        return value
-
-    def get_default(self):
-        return self.to_internal_value('1')
-
-class DangerField(serializers.Field):
-    def to_internal_value(self, data):
-        return Ml.get_danger_level(data)
-
-    def to_representation(self, value):
-        return value
-
-    def get_default(self):
-        return self.to_internal_value('1')
-
 class CreateMessageSerializer(serializers.ModelSerializer):
     author_id = UserField()
-    # event_class = EventField(required=False)
-    # danger_level = DangerField(required=False)
-    event_class = serializers.HiddenField(default=Ml.classify('self'))
-    danger_level = serializers.HiddenField(default=Ml.get_danger_level('1'))
+
+    def create(self, validated_data):
+        ModelClass = self.Meta.model
+        validated_data['event_class'] = Ml.classify(validated_data.get('text'))
+        validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
+        validated_data['address'] = Ml.find_address(validated_data.get('text'))
+        instance = ModelClass._default_manager.create(**validated_data)
+        return instance
 
     class Meta:
         model = MessageModel
-        exclude = ['author']
+        exclude = ['author', 'event_class', 'danger_level', 'address']

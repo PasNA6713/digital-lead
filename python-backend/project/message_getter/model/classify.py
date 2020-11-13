@@ -11,16 +11,18 @@ class EVENT:
     VALUES = {Undifined, Fire, Dtp, WarmWater, ColdWater}
 
 class DANGER:
-        LOW = 1
-        MEDIUM = 2
-        HIGH = 3
+    LOW = 1
+    MEDIUM = 2
+    HIGH = 3
 
-        VALUES = {LOW, MEDIUM, HIGH}
+    VALUES = {LOW, MEDIUM, HIGH}
 
 
-def get_danger_level(obj) -> int:
+def get_danger_level(text: str) -> int:
     return DANGER.LOW
 
-def classify(obj) -> str:
-    logger.debug(obj)
+def classify(text: str) -> str:
     return EVENT.Undifined
+
+def find_address(text: str) -> str:
+    return None

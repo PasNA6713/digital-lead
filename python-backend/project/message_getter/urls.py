@@ -3,6 +3,8 @@ from django.urls import path
 from . import views
 
 urlpatterns = [
+    path('photo/', views.UploadPhotoView.as_view()),
+    
     # message methods
     path('create/', views.CreateMessageView.as_view()),
     path('get/', views.GetAllMessagesView.as_view()),
