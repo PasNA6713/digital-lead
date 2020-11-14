@@ -1,17 +1,15 @@
 import os
+import json
 import requests
 
 import telebot
 from dotenv import load_dotenv
-
-from loguru import logger
 
 
 load_dotenv(".env")
 
 bot = telebot.TeleBot(os.getenv("MY_KEY"))
 BACKEND = os.getenv("BACKEND_URL")
-DIRPATH = os.getcwd()
 
 @bot.message_handler(func=lambda message: True)
 def send_welcome(message):
@@ -22,7 +20,12 @@ def send_welcome(message):
             "text": message.text
         }
     )
-    bot.reply_to(message, 'Спасибо за обращение, оно поможет сделать город лучше!')
+    response = json.loads(r.content)
+    cl = response.get("event_class")
+    if cl == "D": cl = "Дтп"
+    elif cl == "F": cl = "Пожар"
+    elif cl == "WW": cl = "Нарушение водоснабжения"
+    bot.reply_to(message, f'Ваше сообщение класса: {cl}\nПо адресу: {response.get("address")}\nПринято!\n\nСпасибо за обращение, оно поможет сделать город лучше!')
 
 @bot.message_handler(content_types=['photo'])
 def processPhotoMessage(message):

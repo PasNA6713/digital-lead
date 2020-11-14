@@ -1,7 +1,5 @@
 import json
 
-from loguru import logger
-
 from rest_framework import serializers
 
 from .models import UserIdentifierModel, MessageModel, AddressModel
@@ -15,10 +13,12 @@ class UserIdentifierSerializer(serializers.ModelSerializer):
         model = UserIdentifierModel
         fields = '__all__'
 
+
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddressModel
         fields = '__all__'
+
 
 class GetMessageSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -37,26 +37,26 @@ class UserField(serializers.Field):
     def to_representation(self, value):
         return value
 
-class AddressField(serializers.DictField):
-    def to_internal_value(self, data):
-        obj = AddressModel.objects.get_or_create(
-            latitude=data.get('latitude'),
-            longtitude=data.get('longtitude'),
-            district=data.get('district')
-        )
-        return data
-
-    def to_representation(self, value):
-        return value
 
 class CreateMessageSerializer(serializers.ModelSerializer):
     author_id = UserField()
-    my_address = AddressField(required=False)
+    my_address = serializers.DictField(required=False)
+    date = serializers.DateTimeField(required=False)
+    address = serializers.SlugRelatedField(slug_field="text", read_only=True)
+    danger_level = serializers.ReadOnlyField()
+    event_class = serializers.ReadOnlyField()
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
         address = validated_data.pop('my_address')
-        validated_data['address'] = AddressModel.objects.get(latitude=address.get('latitude'), longtitude=address.get('longtitude'))
+        if address:
+            validated_data['address'] = AddressModel.objects.get_or_create(
+                latitude=address.get('latitude'),
+                longtitude=address.get('longtitude'),
+                text=Ml.find_address(validated_data.get('text'))
+                )[0]
+        else: 
+            validated_data['address'] = AddressModel.objects.get_or_create(text=Ml.find_address(validated_data.get('text')))[0]
         validated_data['event_class'] = Ml.classify(validated_data.get('text'))
         validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
         instance = ModelClass._default_manager.create(**validated_data)
@@ -64,4 +64,4 @@ class CreateMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MessageModel
-        exclude = ['author', 'event_class', 'danger_level', 'address']
+        exclude = ['author', 'id']

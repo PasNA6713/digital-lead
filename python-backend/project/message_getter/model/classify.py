@@ -1,5 +1,9 @@
 import random
 import os
+<<<<<<< HEAD
+=======
+
+>>>>>>> 48053ea7494d126cc00495acaefc6b7b63fe3943
 import joblib
 from natasha import (
     Segmenter,
@@ -18,6 +22,7 @@ from natasha import (
 
     Doc
 )
+<<<<<<< HEAD
 segmenter = Segmenter()
 morph_vocab = MorphVocab()
 
@@ -30,6 +35,8 @@ names_extractor = NamesExtractor(morph_vocab)
 dates_extractor = DatesExtractor(morph_vocab)
 money_extractor = MoneyExtractor(morph_vocab)
 addr_extractor = AddrExtractor(morph_vocab)
+=======
+>>>>>>> 48053ea7494d126cc00495acaefc6b7b63fe3943
 
 from loguru import logger
 from classificator import preproccesor
@@ -39,6 +46,19 @@ import sys
 sys.path.append('./models/tensorflow1/models/research/object_detection')
 from Object_detection_image import get_image
 
+
+segmenter = Segmenter()
+morph_vocab = MorphVocab()
+
+emb = NewsEmbedding()
+morph_tagger = NewsMorphTagger(emb)
+syntax_parser = NewsSyntaxParser(emb)
+ner_tagger = NewsNERTagger(emb)
+
+names_extractor = NamesExtractor(morph_vocab)
+dates_extractor = DatesExtractor(morph_vocab)
+money_extractor = MoneyExtractor(morph_vocab)
+addr_extractor = AddrExtractor(morph_vocab)
 
 class EVENT:
     Undifined = 'U'
@@ -68,10 +88,16 @@ def get_danger_level(objct):
 
 def classify(text: str) -> str:
     path = os.getcwd()
+<<<<<<< HEAD
     classificator = joblib.load(os.getcwd()+'\\models\\finalized_model.sav')
     vectorizer = joblib.load(os.getcwd()+'\\models\\vectorizer.sav')
     text = preproccesor(text)
     vector_text = extractor.transform([text])
+=======
+    classificator = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/finalized_model.sav')
+    vectorizer = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/vectorizer.sav')
+    vector_text = vectorizer.transform([text])
+>>>>>>> 48053ea7494d126cc00495acaefc6b7b63fe3943
     if classificator.predict(vector_text) == 0:
         return EVENT.Dtp
     elif classificator.predict(vector_text) == 1:
@@ -81,6 +107,10 @@ def classify(text: str) -> str:
 
 def find_address(text: str) -> str:
     def get_addres(match):
+<<<<<<< HEAD
+=======
+        if not match: return ''
+>>>>>>> 48053ea7494d126cc00495acaefc6b7b63fe3943
         adres = ''
         for i in match.fact.parts:
                 adres += i.type+' '+i.value+' ' 

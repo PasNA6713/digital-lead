@@ -16,4 +16,10 @@ urlpatterns = [
     path('get-user/', views.GetAllUsersView.as_view()),
     path('get-user/<int:pk>/', views.GetUserView.as_view()),
     path('delete-user/<int:pk>/', views.DeleteUserView.as_view()),
+
+    # dashboards methods
+    path('dashboard/hour/', views.GetHourView.as_view()),
+    path('dashboard/day/', views.GetDayView.as_view()),
+    path('dashboard/month/', views.GetMonthView.as_view()),
+    path('dashboard/year/', views.GetYearView.as_view()),
 ]
