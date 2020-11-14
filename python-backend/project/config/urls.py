@@ -26,7 +26,6 @@ schema_view = get_schema_view(
 
 urlpatterns = [
    # my methods
-   path('', include('operator_app.urls')),
    path('message/', include('message_getter.urls')),
 
    path('admin/', admin.site.urls),

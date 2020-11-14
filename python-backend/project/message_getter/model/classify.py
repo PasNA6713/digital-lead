@@ -1,3 +1,5 @@
+import random
+
 from loguru import logger
 
 
@@ -19,10 +21,13 @@ class DANGER:
 
 
 def get_danger_level(text: str) -> int:
-    return DANGER.LOW
+    return random.choice(list(DANGER.VALUES))
 
 def classify(text: str) -> str:
-    return EVENT.Undifined
+    return EVENT.ColdWater
 
 def find_address(text: str) -> str:
     return None
+
+def get_file(file):
+    logger.debug(file)

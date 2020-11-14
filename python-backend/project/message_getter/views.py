@@ -14,7 +14,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .models import UserIdentifierModel, MessageModel
 from .serializers import UserIdentifierSerializer, GetMessageSerializer, CreateMessageSerializer
 from .filters import MessageFilter
-from .services import get_file
+from .model.classify import get_file
 
 from loguru import logger
 
@@ -65,6 +65,8 @@ class GetAllMessagesView(ListAPIView):
     def list(self, request, *args, **kwargs):
         queryset = self.filter_queryset(self.get_queryset())
         serializer = self.get_serializer(queryset, many=True)
-        response = serializer.data
-        response.append(datetime.now())
+        response = {
+            'data': serializer.data,
+            'timestamp': datetime.now()
+        }
         return Response(response)
