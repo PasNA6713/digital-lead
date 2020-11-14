@@ -28,9 +28,7 @@ export default {
         navButtons: [
           {title: 'Статистика', url: '/statistics'},
           {title: 'Отчеты', url: '/reports'},
-          {title: 'что-то еще 1', url: '/'},
-          {title: 'что-то еще 2', url: '/'},
-          {title: 'что-то еще 3', url: '/'}
+          {title: 'Карта', url: '/'}
         ]
     }),
     methods: {

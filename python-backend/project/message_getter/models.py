@@ -20,7 +20,7 @@ class UserIdentifierModel(models.Model):
 
 
 class AddressModel(models.Model):
-    text = models.CharField(max_length=100, null=True, blank=True, unique=True)
+    text = models.CharField(max_length=100, null=True, blank=True, unique=False)
     district = models.CharField(max_length=50, null=True, blank=True)
     latitude = models.DecimalField(max_digits=8, decimal_places=6, null=True, blank=True)
     longtitude = models.DecimalField(max_digits=8, decimal_places=6, null=True, blank=True)

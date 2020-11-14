@@ -13,10 +13,12 @@ class UserIdentifierSerializer(serializers.ModelSerializer):
         model = UserIdentifierModel
         fields = '__all__'
 
+
 class AddressSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddressModel
         fields = '__all__'
+
 
 class GetMessageSerializer(serializers.ModelSerializer):
     address = AddressSerializer()
@@ -62,4 +64,4 @@ class CreateMessageSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = MessageModel
-        exclude = ['author']
+        exclude = ['author', 'id']

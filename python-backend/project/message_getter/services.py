@@ -10,7 +10,7 @@ def get_day_data(month, day, year,  danger='', event=''):
     return _get_graphic_data(month, day, year, r=24, delta=timedelta(hours=1), event=event, danger=danger)
 
 def get_month_data(month, year, danger="", event=""):
-    return _get_graphic_data(month, 1, 2019, delta=timedelta(days=1), event=event, danger=danger)
+    return _get_graphic_data(month, 1, year, delta=timedelta(days=1), event=event, danger=danger)
 
 def get_year_data(year,  danger='', event=''):
     return _get_graphic_data(1, 1, year, r=12, delta=None, event=event, danger=danger)
