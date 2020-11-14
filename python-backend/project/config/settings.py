@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1','7f117f468f23.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1','46c60a696609.ngrok.io']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -163,7 +163,23 @@ TEMPLATES = [
     },
 ]
 
+
 CORS_ORIGIN_ALLOW_ALL = True
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+    'Access-Control-Allow-Origin',
+    'Access-Control-Allow-Headers',
+    'Access-Control-Allow-Credentials',
+)
 
 CORS_ALLOW_HEADERS  =  list(default_headers )  +  [ 
     'Content-Disposition', 

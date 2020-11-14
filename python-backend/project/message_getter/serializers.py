@@ -51,12 +51,17 @@ class AddressField(serializers.DictField):
 
 class CreateMessageSerializer(serializers.ModelSerializer):
     author_id = UserField()
-    my_address = AddressField(required=False)
+    my_address = serializers.DictField(required=False)
+    date = serializers.DateTimeField(required=False)
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
         address = validated_data.pop('my_address')
-        validated_data['address'] = AddressModel.objects.get(latitude=address.get('latitude'), longtitude=address.get('longtitude'))
+        validated_data['address'] = AddressModel.objects.get_or_create(
+            latitude=address.get('latitude'),
+            longtitude=address.get('longtitude'),
+            text=Ml.find_address(validated_data.get('text'))
+            )[0]
         validated_data['event_class'] = Ml.classify(validated_data.get('text'))
         validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
         instance = ModelClass._default_manager.create(**validated_data)

@@ -1,5 +1,6 @@
 import random
 import os
+
 import joblib
 from natasha import (
     Segmenter,
@@ -18,6 +19,10 @@ from natasha import (
 
     Doc
 )
+
+from loguru import logger
+
+
 segmenter = Segmenter()
 morph_vocab = MorphVocab()
 
@@ -30,9 +35,6 @@ names_extractor = NamesExtractor(morph_vocab)
 dates_extractor = DatesExtractor(morph_vocab)
 money_extractor = MoneyExtractor(morph_vocab)
 addr_extractor = AddrExtractor(morph_vocab)
-
-from loguru import logger
-
 
 class EVENT:
     Undifined = 'U'
@@ -56,9 +58,9 @@ def get_danger_level(text: str) -> int:
 
 def classify(text: str) -> str:
     path = os.getcwd()
-    classificator = joblib.load(os.getcwd()+'\\models\\finalized_model.sav')
-    vectorizer = joblib.load(os.getcwd()+'\\models\\vectorizer.sav')
-    vector_text = extractor.transform([text])
+    classificator = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/finalized_model.sav')
+    vectorizer = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/vectorizer.sav')
+    vector_text = vectorizer.transform([text])
     if classificator.predict(vector_text) == 0:
         return EVENT.Dtp
     elif classificator.predict(vector_text) == 1:
@@ -67,13 +69,13 @@ def classify(text: str) -> str:
         return EVENT.WarmWater
 
 def find_address(text: str) -> str:
-    
+    logger.debug(text)
     def get_addres(match):
+        if not match: return ''
         adres = ''
         for i in match.fact.parts:
                 adres += i.type+' '+i.value+' ' 
         return(adres[:len(adres)-1])
-
     match = addr_extractor.find(text)
     return get_addres(match)
 
