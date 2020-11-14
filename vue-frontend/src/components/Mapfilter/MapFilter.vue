@@ -1,28 +1,29 @@
 <template>
-  <div>
+  <div map-filter>
     <danger-filter />
     <br>
-    <author-filter />
+    <event-filter />
+    <br>
+    <date-filter />
   </div>
 </template>
 
 <script>
 import DangerFilter from './DangerFilter'
-import AuthorFilter from './AuthorFilter'
+import EventFilter from './EventFilter'
+import DateFilter from './DateFiltere'
 
 export default {
   components: {
     DangerFilter,
-    AuthorFilter
+    EventFilter,
+    DateFilter
   }
 }
 </script>
 
 <style scoped>
-  .checkbox-filter{
+  .map-filter{
     margin-left: 100px;
-  }
-  .for-filter{
-    padding: 10px 10px;
   }
 </style>

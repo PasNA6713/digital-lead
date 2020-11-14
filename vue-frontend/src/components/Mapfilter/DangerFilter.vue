@@ -1,5 +1,5 @@
 <template>
-      <div class="map-filter">
+    <div class="map-filter">
     <br>
     <v-card
     class="mx-auto for-filter"
@@ -38,17 +38,15 @@
 export default {
     data () {
     return {
-      colors: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3'],
+      colors: ['red', 'indigo', 'orange', 'primary', 'secondary', 'success', 'info', 'warning', 'error', 'red darken-3', 'indigo darken-3', 'orange darken-3', 'yellow', 'blue'],
     }
   },
 }
 </script>
 
 <style scoped>
-  .map-filter{
-    margin-left: 100px;
-  }
   .for-filter{
     padding: 10px 10px;
+    margin-left: 100px;
   }
 </style>
