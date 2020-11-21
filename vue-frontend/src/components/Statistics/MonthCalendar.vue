@@ -45,6 +45,7 @@ export default {
   }),
   computed: {
     dateRangeText () {
+      console.log(this.months)
       return this.months.join(' - ')
     }
   }

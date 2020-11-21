@@ -44,7 +44,12 @@ export default {
   computed: {
     dateRangeText () {
       return this.dates.join(' - ')
-    },
+    }
+  },
+  methods: {
+    getDates(){
+      console.log(this.dates)
+    }
   }
 }
 </script>

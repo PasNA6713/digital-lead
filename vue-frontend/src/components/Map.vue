@@ -1,113 +1,69 @@
 <template>
     <div>
         <br>
-        <div class="border primary-border" id="map"></div>
+        <yandex-map  id="map"
+            :settings="settings"
+            :coords="mapCenter"
+            :zoom="10" 
+            :use-object-manager="true"
+            @click="onClick"
+        >
+            <ymap-marker 
+            :key="marker.id"
+            v-for="marker in placemarks" 
+            :coords="marker.coords" 
+            marker-id="marker.id" 
+            hint-content="marker.id"
+            />
+        </yandex-map>
         <br>
     </div>
 </template>
 
 <script>
-import {mapGetters, mapMutations} from 'vuex'
+    import { yandexMap, ymapMarker } from 'vue-yandex-maps'
 
     export default{
+        components: {
+            yandexMap, 
+            ymapMarker
+        },
         data: () => ({
-            placemarks: {
-                "type": "FeatureCollection",
-                "features": [
-                    {
-                        type: 'Feature',
-                        id: 3,
-                        geometry: {
-                            type: 'Point',
-                            coordinates: [59.9, 30.55]
-                        },
-                        properties: {
-                            hintContent: 'Содержание всплывающей подсказки',
-                            balloonContent: 'Содержание балуна'
-                        },
-                        options: {
-                            preset: "islands#dotIcon",
-                            iconColor: "blue"
-                        }
-                    }   
-                ],
+            settings: {
+                apiKey: 'e70694c3-ce7f-4459-b7f6-be3d53e2cc8e',
+                lang: 'ru_RU',
+                coordorder: 'latlong',
+                version: '2.1'
             },
-            myMap: null,
-            objectManager: null,
-
-            messages: null,
+            // isObjectManager: true,
+            mapCenter: [59.9370, 30.3089],
+            placemarks: 
+                [
+                    {
+                        "id": 1,
+                        "coords": [59.9, 30.55]
+                    },
+                    {
+                        "id": 2,
+                        "coords": [59.945800, 30.271400]
+                    },
+                    {
+                        "id": 3,
+                        "coords": [59.945800, 30.271000]
+                    }
+                ],
             classifier: {
                 1: 'yellow',
                 2: 'blue',
                 3: 'red'
             }
             }),
-
         methods: {
-            ...mapMutations(["updateMessages"])
-        },
-        computed:{
-            
-        },
-
-        created() {
-            axios
-            .get('http://127.0.0.1:8000/message/get/?danger=1')
-            .then((response) => {
-                this.messages = response.data["data"]
-                    for (let i=0;i<this.messages.length;i++){
-                this.placemarks["features"].push({
-                    type: 'Feature',
-                    id: this.messages[i]["id"],
-                    geometry: {
-                        type: 'Point',
-                        coordinates: [this.messages[i]["address"]["latitude"], this.messages[i]["address"]["longtitude"]]
-                    },
-                    properties: {
-                        hintContent: this.messages[i]["date"],
-                        balloonContent: this.messages[i]["text"]
-                    },
-                    options: {
-                        preset: "islands#dotIcon",
-                        iconColor: this.classifier[this.messages[i]["danger_level"]]
-                    }
-                })}
-                this.updateMessages(this.messages)
-
-                ymaps.ready(() => {
-                    this.myMap = new ymaps.Map("map", {
-                        center: [59.9370, 30.3089],
-                        zoom: 10,
-                        controls: ['zoomControl'], 
-                        behaviors: ['drag', 'scrollZoom']
-                    }, {
-                        searchControlProvider: 'yandex#search'
-                    })
-
-                    this.objectManager = new ymaps.ObjectManager({
-                        clusterize: true,
-                        gridSize: 32,
-                        clusterDisableClickZoom: true
-                    })
-                    
-                    this.objectManager.clusters.options.set('preset', 'islands#redClusterIcons')
-                    this.objectManager.add(this.placemarks)
-
-                    this.myMap.geoObjects.add(this.objectManager)
-
-
-                    this.myMap.geoObjects.events.add('click', function (e) {
-                        let target = e.get('objectId');
-                        const cluster = this.objectManager.clusters.getById(target)
-                        if (cluster) {
-                            const objects = cluster.properties.geoObjects
-                        }
-                    })
-                })
-            })
+            onClick(e) {
+                this.placemarks = e.get('coords');
         }
-        
-  }
+    }
+}
 </script>
 
 <style scoped>

@@ -84,7 +84,7 @@
     overflow-y: hidden;
   }
   #sublogin{
-      margin: 200px auto;
+      margin: auto auto;
       min-width: 700px;
       height: 250px;
       padding: 15px 15px;
