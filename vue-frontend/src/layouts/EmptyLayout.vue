@@ -1,14 +1,22 @@
 <template>
-    <div id="empty-layout">
-        <router-view />
-    </div>
+    <v-row>
+        <v-col cols="5" style="display: flex; align-items: center; justify-content: center;">
+                <router-view/>
+        </v-col>
+
+        <v-col cols="7" id="empty-layout">
+        </v-col>
+    </v-row>
 </template>
 
 <style scoped>
     #empty-layout{
-        height: 100%;
+        position: absolute;
         width: 100%;
-        background-image: url('../assets/background_empty.jpg');
-        background-size: cover;
+        height: 100%;
+
+        right: 0;
+
+        background-image: url('../assets/login_back.png');
     }
 </style>

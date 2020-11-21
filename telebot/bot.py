@@ -101,6 +101,7 @@ def venue_processing(message, user):
 @catch_backend_off
 @catch_user
 def processPhotoMessage(message, user):
+    ''' Принимаем фото '''
     fileID = message.photo[-1].file_id
     file = bot.get_file(fileID)
     to_send = bot.download_file(file.file_path)

@@ -1,48 +1,80 @@
 <template>
-  <div id="login">
-    <v-app id="sublogin">
+  <v-card elevation="2" style="width: 500px; height: wrap-content;" class="my-5">
+    <div class="p-3">
+      
+      <p style="
+      font-family: Century Gothic;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 35px;
+      line-height: 43px;
+      text-align: center;
+      color: #27646A;
+      text-transform: uppercase;">Авторизация</p>
 
-      <h2>Вход в личный кабинет</h2>
-      <v-form
-        ref="form"
-        v-model="valid"
-        lazy-validation
+      <v-text-field
+        v-model="phone"
+        label="Номер телефона"
+        type="phone"
+        required
+      ></v-text-field>
+
+      <v-text-field
+        v-model="password"
+        :rules="passwordRules"
+        label="Пароль"
+        type="password"
+        required
+      ></v-text-field>
+
+      <v-btn
+        :disabled="!valid"
+        color="#27646A"
+        @click="validate"
+        class="mt-3 but"
+        block
+        large
       >
-    
-        <v-text-field
-          v-model="email"
-          :rules="emailRules"
-          label="E-mail"
-          required
-        ></v-text-field>
+        Войти
+      </v-btn>
 
-        <v-text-field
-          v-model="password"
-          :rules="passwordRules"
-          label="Password"
-          type="password"
-          required
-        ></v-text-field>
+      <v-btn
+        :disabled="!valid"
+        color="#F58D8E"
+        @click="goto" 
+        class="mt-3 but"
+        block
+        large
+      >
+        Зарегестрироваться
+      </v-btn>
 
-        <v-btn
-          :disabled="!valid"
-          color="primary"
-          class="mr-4"
-          @click="validate"
+    </div>
+
+    <v-row justify="space-around"  class="d-flex align-items-center" style="
+    width: 300px;
+    margin: 20px auto 20px;">
+      <v-btn
+          fab
+          dark
+          style="width: 36px; height: 36px"
+          elevation="0"
+          color="#27646A"
         >
-          Войти
-        </v-btn>
-    
-        <v-btn
-          color="error"
-          class="mr-4"
-          @click="reset"
-        >
-          Очистить
-        </v-btn>
-      </v-form>
-  </v-app>
-  </div>
+        <v-icon dark>mdi-google</v-icon>
+      </v-btn>
+
+      <v-icon
+        x-large
+        color="#27646A"
+      >mdi-facebook</v-icon>
+
+      <v-icon
+        x-large
+        color="#27646A"
+      >mdi-vk</v-icon>
+    </v-row>
+  </v-card> 
 </template>
 
 <script>
@@ -50,24 +82,25 @@
   export default {
     data: () => ({
       valid: true,
-      password: '',
+      password: null,
+      phone: null,
       passwordRules: [
         v => !!v || 'Пароль не может быть пустым',
         v => (v && v.length > 10) || `Пароль должен быть длиннее 10 символов, а сейчас ${v.length}`,
       ],
-      email: '',
-      emailRules: [
-        v => !!v || 'E-mail не может быть пустым',
-        v => /.+@.+\..+/.test(v) || 'Введите корректный e-mail',
-      ]
     }),
 
     methods: {
+      goto() {
+        this.$router.push('/signup/')
+      },
+
       validate () {
         if (this.$refs.form.validate()){
-          this.$router.push('/')
+          this.$router.push('/main')
         }
       },
+
       reset () {
         this.$refs.form.reset()
       }
@@ -76,19 +109,14 @@
 </script>
 
 <style scoped>
-  #login{
-    display: flex;
-    min-width: 1500px;
-    height: 725px;
-    margin: auto auto;
-    overflow-y: hidden;
-  }
-  #sublogin{
-      margin: auto auto;
-      min-width: 700px;
-      height: 250px;
-      padding: 15px 15px;
-      border: 1px;
-      border-radius: 10px;
-  }
+.but {
+  font-family: Century Gothic;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 43px;
+  text-align: center;
+  color: white;
+  text-transform: uppercase;
+}
 </style>
