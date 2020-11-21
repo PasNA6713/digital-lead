@@ -29,10 +29,14 @@ class GetMessageSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class UserField(serializers.Field):
+class UserField(serializers.DictField):
     def to_internal_value(self, data):
-        obj = UserIdentifierModel.objects.get_or_create(id=data)
-        return data
+        obj = UserIdentifierModel.objects.get_or_create(
+            id=data.get('id'),
+            name=data.get('firstname'),
+            second_name=data.get('lastname')
+        )
+        return data.get('id')
 
     def to_representation(self, value):
         return value
@@ -40,23 +44,24 @@ class UserField(serializers.Field):
 
 class CreateMessageSerializer(serializers.ModelSerializer):
     author_id = UserField()
-    my_address = serializers.DictField(required=False)
-    date = serializers.DateTimeField(required=False)
-    address = serializers.SlugRelatedField(slug_field="text", read_only=True)
+
+    address = serializers.SlugRelatedField(slug_field="id", read_only=True)
+
     danger_level = serializers.ReadOnlyField()
     event_class = serializers.ReadOnlyField()
+    date = serializers.ReadOnlyField()
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
-        address = validated_data.pop('my_address')
-        if address:
-            validated_data['address'] = AddressModel.objects.get_or_create(
-                latitude=address.get('latitude'),
-                longtitude=address.get('longtitude'),
-                text=Ml.find_address(validated_data.get('text'))
-                )[0]
-        else: 
-            validated_data['address'] = AddressModel.objects.get_or_create(text=Ml.find_address(validated_data.get('text')))[0]
+        
+        address = AddressModel.objects.filter(
+            text=Ml.find_address(validated_data.get('text'))
+        )
+        if not address: 
+            address = AddressModel(text='No information')
+            address.save()
+
+        validated_data['address'] = address
         validated_data['event_class'] = Ml.classify(validated_data.get('text'))
         validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
         instance = ModelClass._default_manager.create(**validated_data)

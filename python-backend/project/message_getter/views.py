@@ -8,17 +8,22 @@ from rest_framework.generics import (
     RetrieveAPIView,
     CreateAPIView,
     DestroyAPIView,
-    ListAPIView
+    ListAPIView,
+    UpdateAPIView
 )
 
-from .models import UserIdentifierModel, MessageModel
-from .serializers import UserIdentifierSerializer, GetMessageSerializer, CreateMessageSerializer
+from .models import UserIdentifierModel, MessageModel, AddressModel
+from .serializers import UserIdentifierSerializer, GetMessageSerializer, CreateMessageSerializer, AddressSerializer
 from .filters import MessageFilter
 from .model.classify import get_file
 from . import services
 
 from loguru import logger
 
+
+class UpdateAddressView(UpdateAPIView):
+    serializer_class = AddressSerializer
+    queryset = AddressModel.objects.all()
 
 # Upload File and check it
 class UploadPhotoView(APIView):
