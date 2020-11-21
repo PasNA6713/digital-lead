@@ -1,5 +1,13 @@
 import random
 import os
+from sklearn.ensemble import RandomForestClassifier
+from sklearn.feature_extraction.text import TfidfVectorizer
+import warnings
+from pymystem3 import Mystem
+import re
+import time
+from os import listdir
+import numpy as np
 
 import joblib
 from natasha import (
@@ -37,19 +45,15 @@ money_extractor = MoneyExtractor(morph_vocab)
 addr_extractor = AddrExtractor(morph_vocab)
 
 class EVENT:
-    Undifined = 'U'
     Fire = "F"
     Dtp = "D"
-    WarmWater = "WW"
-    ColdWater = "CW"
+    Vodosnabgenie = "WS"
     Trash = "T"
-    Houses = "H"
-    Yard = "Y"
+    Light = "L"
     Roads = "R"
-    Connection = "C"
-    Territory = "Ter"
+    Lakes_and_Rivers = "LR"
 
-    VALUES = {Undifined, Fire, Dtp, WarmWater, ColdWater}
+    VALUES = {Lakes_and_Rivers, Fire, Dtp, Light, Roads, Vodosnabgenie, Trash}
 
 class DANGER:
     LOW = 1
@@ -58,21 +62,35 @@ class DANGER:
 
     VALUES = {LOW, MEDIUM, HIGH}
 
-
 def get_danger_level(text: str) -> int:
-    return random.choice(list(DANGER.VALUES))
+    if text == EVENT.Light or text == EVENT.Vodosnabgenie or text == EVENT.Trash:
+        return DANGER.LOW
+    elif text == EVENT.Lakes_and_Rivers or text == EVENT.Roads:
+        return DANGER.MEDIUM
+    elif text == EVENT.Dtp or text == EVENT.Fire:
+        return DANGER.HIGH
 
 def classify(text: str) -> str:
     path = os.getcwd()
-    classificator = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/finalized_model.sav')
-    vectorizer = joblib.load('C:/Users/Lancetnik/Desktop/python/hacks/digital-lead/python-backend/project/message_getter/model/models/vectorizer.sav')
+    classificator = joblib.load('путь до модели в папке моделс')
+    vectorizer = joblib.load('путь до модели в папке моделс')
+    preproc = joblib.load('путь до модели в папке моделс')
+    text = preproc(text)
     vector_text = vectorizer.transform([text])
     if classificator.predict(vector_text) == 0:
-        return EVENT.Dtp
+        return EVENT.Light
     elif classificator.predict(vector_text) == 1:
-        return EVENT.Fire
+        return EVENT.Lakes_and_Rivers
     elif classificator.predict(vector_text) == 2:
-        return EVENT.WarmWater
+        return EVENT.Roads
+    elif classificator.predict(vector_text) == 3:
+        return EVENT.Trash
+    elif classificator.predict(vector_text) == 4:
+        return EVENT.Dtp
+    elif classificator.predict(vector_text) == 5:
+        return EVENT.Fire
+    elif classificator.predict(vector_text) == 6:
+        return EVENT.Vodosnabgenie
 
 def find_address(text: str) -> str:
     def get_addres(match):
