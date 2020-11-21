@@ -42,6 +42,12 @@ class EVENT:
     Dtp = "D"
     WarmWater = "WW"
     ColdWater = "CW"
+    Trash = "T"
+    Houses = "H"
+    Yard = "Y"
+    Roads = "R"
+    Connection = "C"
+    Territory = "Ter"
 
     VALUES = {Undifined, Fire, Dtp, WarmWater, ColdWater}
 

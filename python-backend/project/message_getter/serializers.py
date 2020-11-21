@@ -42,27 +42,36 @@ class UserField(serializers.DictField):
         return value
 
 
+class AddressField(serializers.DictField):
+    def to_internal_value(self, data):
+        obj = AddressModel.objects.get_or_create(
+            latitude=data.get('latitude'),
+            longtitude=data.get('longtitude')
+        )
+        return AddressModel.objects.get(
+            latitude=data.get('latitude'),
+            longtitude=data.get('longtitude')
+        )
+
+    def to_representation(self, value):
+        return value
+
+
 class CreateMessageSerializer(serializers.ModelSerializer):
     author_id = UserField()
+    addr = AddressField(required=False)
+    date = serializers.DateTimeField(required=False)
 
     address = serializers.SlugRelatedField(slug_field="id", read_only=True)
 
     danger_level = serializers.ReadOnlyField()
-    event_class = serializers.ReadOnlyField()
-    date = serializers.ReadOnlyField()
+    event_class = serializers.CharField()
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
-        
-        address = AddressModel.objects.filter(
-            text=Ml.find_address(validated_data.get('text'))
-        )
-        if not address: 
-            address = AddressModel(text='No information')
-            address.save()
-
-        validated_data['address'] = address
-        validated_data['event_class'] = Ml.classify(validated_data.get('text'))
+        if 'addr' in validated_data:
+            validated_data['address'] = validated_data.pop('addr')
+        # validated_data['event_class'] = Ml.classify(validated_data.get('text'))
         validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
         instance = ModelClass._default_manager.create(**validated_data)
         return instance

@@ -56,7 +56,7 @@
 
         <v-btn
             color="#F58D8E"
-            @click="validate"
+            @click="signUp"
             class="mt-3 but"
             block
             large
@@ -101,11 +101,38 @@
       mail: null,
       confirm_password: null,
       firstname: null,
-      lastname: null
+      lastname: null,
+
+      isCreated: false,
+      error: []
     }),
 
     methods: {
-      
+        signUp() {
+            fetch(
+                `http://127.0.0.1:8000/auth/users/`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        username: this.firstname,
+                        password: this.password,
+                        email: this.email
+                    })
+                }
+            ).then(response => {
+                response.json().then(response => {
+                    if (response.username === this.firstname) {
+                        this.$router.go(-1)
+                    }
+                    else {
+                        this.isCreateFault = true
+                        this.error = response
+                    }
+                })
+            })
+		}
     }
   }
 </script>

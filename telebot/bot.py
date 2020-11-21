@@ -53,7 +53,8 @@ def send_welcome(message, user):
         f'{BACKEND}message/create/',
         json = {
             'text': message.text,
-            'author_id': user
+            'author_id': user,
+            'addr': {}
     })
     response = json.loads(r.content)
     cl = response.get("event_class")
