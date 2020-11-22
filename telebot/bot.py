@@ -49,6 +49,7 @@ def catch_user(func):
 @catch_backend_off
 @catch_user
 def send_welcome(message, user):
+    ''' Принимаем текстовые сообщения '''
     r = requests.post(
         f'{BACKEND}message/create/',
         json = {
@@ -59,10 +60,15 @@ def send_welcome(message, user):
     response = json.loads(r.content)
     cl = response.get("event_class")
     users_last_message_address_id[user.get('id')] = response.get("address")
+    logger.debug(cl)
     if cl == "D": cl = "Дтп"
     elif cl == "F": cl = "Пожар"
-    elif cl == "WW": cl = "Нарушение водоснабжения"
-    bot.reply_to(message, f'Ваше сообщение класса: {cl}\nПринято!\n\nПожалуйста, прикрепите к нему адрес!')
+    elif cl == "WS": cl = "Нарушение водоснабжения"
+    elif cl == "T": cl = "Мусор"
+    elif cl == "L": cl = "Сбой электросети"
+    elif cl == "LR": cl = "Загрязнение водоемов"
+    elif cl == "R": cl = "Дороги"
+    bot.reply_to(message, f'Ваше сообщение класса: {cl}\nПринято!\n\nПожалуйста, напишите адрес или прикрепите геопозицию!')
 
 
 @bot.message_handler(content_types=['location'])
@@ -101,7 +107,7 @@ def venue_processing(message, user):
 @bot.message_handler(content_types=['photo'])
 @catch_backend_off
 @catch_user
-def processPhotoMessage(message, user):
+def photo_processing(message, user):
     ''' Принимаем фото '''
     fileID = message.photo[-1].file_id
     file = bot.get_file(fileID)
