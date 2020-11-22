@@ -12,7 +12,7 @@ const routes = [
   },
   {
     path: '/signup',
-    name: 'login',
+    name: 'sigh',
     meta: { layout: 'empty' },
     component: () => import('../views/Signup.vue')
   },
@@ -27,7 +27,7 @@ const routes = [
     path: '/statistics',
     name: 'statistics',
     meta: { layout: 'main' },
-    component: () => import('../views/Statistics/Statistics.vue'),
+    component: () => import('../views/Statistics.vue'),
   },
   {
     path: '/reports',

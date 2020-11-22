@@ -1,7 +1,13 @@
 <template>
     <v-row>
+        <v-img
+            max-height="150"
+            max-width="250"
+            src="../assets/grazh.svg"
+            style="position: absolute; top: 40px; left:40px"
+        ></v-img>
         <v-col cols="5" style="display: flex; align-items: center; justify-content: center;">
-                <router-view/>
+            <router-view/>
         </v-col>
 
         <v-col cols="7" id="empty-layout">

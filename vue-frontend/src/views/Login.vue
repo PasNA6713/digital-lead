@@ -111,6 +111,7 @@
               response.json().then(response => {
                   const token = response.auth_token
                   console.log(token)
+                  this.$router.push('/main')
               })
           })
       },

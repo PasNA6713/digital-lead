@@ -1,28 +1,23 @@
 <template>
-    <v-card height="100px">
-      <v-footer
-        absolute
-        :padless="padless"
+    <v-footer
+      dark
+      padless
+      fixed
+    >
+      <v-card
+        class="flex"
+        flat
       >
-        <v-card
-          flat
-          tile
-          width="100%"
-          class="black lighten-1 text-center"
-        >
-          <v-divider></v-divider>
-          <v-card-text class="white--text">
-            {{ new Date().getFullYear() }} — <strong>MozhaykaTeam</strong>
-          </v-card-text>
+        <v-card color="#27646A">
+          <v-card-title></v-card-title>
         </v-card>
-      </v-footer>
-    </v-card>
+    
+        <v-card-text class="py-2 white--text text-center">
+          {{ new Date().getFullYear() }} — <strong>Mozhayka Team</strong>
+        </v-card-text>
+      </v-card>
+    </v-footer>
 </template>
 
 <script>
-export default {
-    data: () => ({
-    padless: false
-  })
-}
 </script>

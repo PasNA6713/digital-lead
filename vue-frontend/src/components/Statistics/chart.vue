@@ -14,6 +14,7 @@
       dark
       v-model="value"
       @click="change_chart(value[0])"
+      class="mx-2"
     >
       Час
     </v-btn>
@@ -24,6 +25,7 @@
       dark
       v-model="value"
       @click="change_chart(value[1])"
+      class="mx-2"
     >
       День
     </v-btn>
@@ -34,6 +36,7 @@
       dark
       v-model="value"
       @click.prevent="change_chart(value[2])"
+      class="mx-2"
     >
       Месяц
     </v-btn>
@@ -43,7 +46,8 @@
       color="primary"
       dark
       v-model="value"
-      @click="change_chart(value[3])"
+      @click.prevent="change_chart('Год')"
+      class="mx-2"
     >
       Год
     </v-btn>
@@ -70,22 +74,22 @@
     data() {
         return {
         to_chart: [
-            {"dtp":7, "year":0},
-            {"dtp":12, "year":5},
-            {"dtp":1, "year":10},
-            {"year":15, "dtp":5},
-            {"year":20,"dtp":1},
-            {"year":25,"dtp":1},
-            {"year":30,"dtp":2},
-            {"year":35,"dtp":2},
-            {"year":40,"dtp":0},
-            {"year":45,"dtp":1},
-            {"year":50,"dtp":1},
-            {"year":55,"dtp":1}
+            {"messages":7, "year":0},
+            {"messages":12, "year":5},
+            {"messages":1, "year":10},
+            {"year":15, "messages":5},
+            {"year":20,"messages":1},
+            {"year":25,"messages":1},
+            {"year":30,"messages":2},
+            {"year":35,"messages":2},
+            {"year":40,"messages":0},
+            {"year":45,"messages":1},
+            {"year":50,"messages":1},
+            {"year":55,"messages":1}
         ],
         chart_config: {
             key: 'year',
-            values: ['dtp']
+            values: ['messages']
         },
         count: 2010,
         value: ["Час", "День", "Месяц", "Год"],
@@ -95,74 +99,65 @@
     methods: {
         change_chart(value) {
             if (value === 'Час') {
-                axios.post('https://748f90e2a605.ngrok.io/message/dashboard/hour/', {
-                    hour: 1,
-                    day: 1,
-                    month: 1,
-                    year: 2019
+                axios.post('http://127.0.0.1:8000/message/dashboard/hour/', {
+                    hour: 19,
+                    day: 21,
+                    month: 7,
+                    year: 2020
                 }).then((response)=>{
                     Vue.set(this.$data, 'resp', response.data)
                     let i = null
                     this.to_chart = []
                     for (i in this.resp) {
-                        // console.log("i", i)
-                        // console.log("push", this.resp[i])
                         this.to_chart.push({
-                            dtp: this.resp[i],
+                            messages: this.resp[i],
                             year: i
                         })
                     }
-                    console.log(this.to_chart)
                 })
             }
             if (value === 'День') {
-                axios.post('https://748f90e2a605.ngrok.io/message/dashboard/day/', {
-                    day: 1,
-                    month: 1,
-                    year: 2019
+                axios.post('http://127.0.0.1:8000/message/dashboard/day/', {
+                    day: 21,
+                    month: 7,
+                    year: 2020
                 }).then((response)=>{
                     Vue.set(this.$data, 'resp', response.data)
                     let i = null
                     this.to_chart = []
                     for (i in this.resp) {
-                        // console.log(i)
-                        // console.log(this.resp[i])
                         this.to_chart.push({
-                            dtp: this.resp[i],
+                            messages: this.resp[i],
                             year: i
                         })
                     }
                 })
             }
             if (value === 'Месяц') {
-                axios.post('https://748f90e2a605.ngrok.io/message/dashboard/month/', {
-                    month: 1,
-                    year: 2019
+                axios.post('http://127.0.0.1:8000/message/dashboard/month/', {
+                    month: 7,
+                    year: 2020
                 }).then((response)=>{
                     Vue.set(this.$data, 'resp', response.data)
                     let i = null
                     this.to_chart = []
                     for (i in this.resp) {
-                        // console.log(i)
-                        // console.log(this.resp[i])
                         this.to_chart.push({
-                            dtp: this.resp[i],
+                            messages: this.resp[i],
                             year: i
                         })
                     }
                 })
             if (value === 'Год') {
-                axios.post('https://748f90e2a605.ngrok.io/message/dashboard/year/', {
-                    year: 2019
+                axios.post('http://127.0.0.1:8000/message/dashboard/year/', {
+                    year: 2020
                 }).then((response)=>{
                     Vue.set(this.$data, 'resp', response.data)
                     let i = null
                     this.to_chart = []
                     for (i in this.resp) {
-                        // console.log(i)
-                        // console.log(this.resp[i])
                         this.to_chart.push({
-                            dtp: this.resp[i],
+                            messages: this.resp[i],
                             year: i
                         })
                     }

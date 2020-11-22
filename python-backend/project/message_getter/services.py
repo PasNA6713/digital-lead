@@ -17,7 +17,7 @@ def get_year_data(year,  danger='', event=''):
 
 def _get_graphic_data(month, day, year, delta, hour = 0, danger='', event='', r=40) -> dict:
     response = dict()
-    after = datetime(year, day, month, hour, 0, 0)
+    after = datetime(year, month, day, hour, 0, 0)
     for i in range(r):
         if delta:
              before = after + delta
