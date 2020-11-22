@@ -1,66 +1,26 @@
 <template>
     <div>
-        <div class="filter-block">
-            <span class="first-header-filter">Район</span>
-            <span class="header-filter">Дата</span>
-            <span class="header-filter">Объект возникновения проблемы</span>
-        </div>
-        <v-row class="autocomplete-block">
-            <v-autocomplete class="autocomplete-item" 
-            :items="districts"
-            v-model="used[0]"
-            ></v-autocomplete>
+        <v-row class="autocomplete-block mt-2">
+            <auto :states="dist" label="Укажите район"/>
+            <auto :states="classes" label="Выберите класс происшествия"/>
+            <auto :states="date" label="Выберите дату"/>
+        </v-row>
 
-            <v-autocomplete class="autocomplete-item" 
-            :items="date"
-            v-model="used[1]"
-            ></v-autocomplete>
-
-            <v-autocomplete class="autocomplete-item" 
-            :items="eventClass"
-            v-model="used[2]"
-            ></v-autocomplete>
-        </v-row>            
         <v-row>
-        <Map :isNeedRefresh="isNeedRefresh" :dynamicFilter="filter" @refreshed="isNeedRefresh = false" @for-autocomplete="getData" />
+            <Map :isNeedRefresh="isNeedRefresh" :dynamicFilter="filter" @refreshed="isNeedRefresh = false" @for-autocomplete="getData" />
         </v-row>
     </div>
 </template>
 
-<style scoped>
-    .first-header-filter{
-        margin-left: 60px;
-    }
-    .header-filter{
-        margin-left: 350px;
-    }
-    .first-header-filter, .header-filter{
-        font-family: Century Gothic;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 20px;
-        line-height: 25px;
-    }
-    .filter-block{
-        margin-top: 50px;
-    }
-    .autocomplete-block{
-        margin-left: 60px;
-        margin-bottom: 30px;
-    }
-    .autocomplete-item{
-        margin-right: 100px;
-        max-width: 300px;
-    }
-</style>
-
 <script>
 import Map from '../components/Map'
+import auto from '../components/autocomplete'
 
 
 export default {
     components: {
-        Map
+        Map,
+        auto
     },
     data: () => ({
         districts: [],
@@ -69,7 +29,41 @@ export default {
         used: [false, false, false],
 
         filter: [],
-        isNeedRefresh: false
+        isNeedRefresh: false,
+
+        dist: [
+            'Выборгский район',
+            'Московский район',
+            'Петродворцовый район',
+            'Курортный район',
+            'Приморский район',
+            'Пушкинский район',
+            'Петроградский район',
+            'Василеостровский район',
+            'Красносельский район',
+            'Невский район',
+            'Центральный район',
+            'Адмиралтейский район',
+            'Фрунзенская район',
+            'Калининский район',
+            'Кировский район',
+            'Кронштадтский район',
+            'Колпинский район',
+            'Красногвардейский район'
+        ],
+
+        classes: [
+            'Дтп',
+            'Пожар',
+            'Свалка',
+            'Загрязнение водоемов',
+            'Дороги',
+            'Благоустройство домов',
+            'Благоустройство дворов',
+            'Благоустройство придомовых территорий',
+            'Нарушение водоснабжения',
+            'Нарушение электроснабжения'
+        ],
     }),
     methods: {
         getData(filter){
@@ -98,11 +92,36 @@ export default {
                 if (newUsed[1]) uniqueDate = newUsed[1]
                 if (newUsed[2]) uniqueEventClass = newUsed[2]
                 
-                
-
                 this.filter.push(uniqueDistrict, uniqueDate, uniqueEventClass)
         }
     }
 }
 </script>
 
+
+<style scoped>
+    .first-header-filter{
+        margin-left: 60px;
+    }
+    .header-filter{
+        margin-left: 350px;
+    }
+    .first-header-filter, .header-filter{
+        font-family: Century Gothic;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 25px;
+    }
+    .filter-block{
+        margin-top: 50px;
+    }
+    .autocomplete-block{
+        margin-left: 60px;
+        margin-bottom: 30px;
+    }
+    .autocomplete-item{
+        margin-right: 100px;
+        max-width: 300px;
+    }
+</style>
