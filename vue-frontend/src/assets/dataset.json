@@ -1,0 +1,255 @@
+[
+    {
+        "id": 23429,
+        "address": {
+            "id": 6164,
+            "text": null,
+            "district": null,
+            "latitude": "59.937400",
+            "longtitude": "30.282000",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 2,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T01:01:13Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23430,
+        "address": {
+            "id": 6165,
+            "text": null,
+            "district": null,
+            "latitude": "59.936924",
+            "longtitude": "30.282853",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 3,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T01:01:49Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23433,
+        "address": {
+            "id": 6168,
+            "text": null,
+            "district": null,
+            "latitude": "59.945800",
+            "longtitude": "30.271000",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 3,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T01:02:40Z",
+        "danger_level": 2,
+        "event_class": "D"
+    },
+    {
+        "id": 23434,
+        "address": {
+            "id": 6169,
+            "text": null,
+            "district": null,
+            "latitude": "59.945800",
+            "longtitude": "30.271400",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 1,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T01:03:01Z",
+        "danger_level": 3,
+        "event_class": "B"
+    },
+    {
+        "id": 23438,
+        "address": {
+            "id": 6172,
+            "text": null,
+            "district": null,
+            "latitude": "60.002800",
+            "longtitude": "30.438500",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 4,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T01:24:42Z",
+        "danger_level": 3,
+        "event_class": "C"
+    },
+    {
+        "id": 23439,
+        "address": {
+            "id": 6173,
+            "text": null,
+            "district": null,
+            "latitude": "59.832774",
+            "longtitude": "30.216851",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 1,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T02:36:19Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23440,
+        "address": {
+            "id": 6174,
+            "text": null,
+            "district": null,
+            "latitude": "59.832237",
+            "longtitude": "30.212352",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 4,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T02:36:22Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23442,
+        "address": {
+            "id": 6175,
+            "text": null,
+            "district": null,
+            "latitude": "59.889581",
+            "longtitude": "30.233239",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 2,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T03:12:39Z",
+        "danger_level": 1,
+        "event_class": "A"
+    },
+    {
+        "id": 23443,
+        "address": {
+            "id": 6176,
+            "text": null,
+            "district": null,
+            "latitude": "59.998841",
+            "longtitude": "30.131098",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 1,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T04:31:55Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23444,
+        "address": {
+            "id": 6176,
+            "text": null,
+            "district": null,
+            "latitude": "59.998841",
+            "longtitude": "30.131098",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 4,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T04:32:09Z",
+        "danger_level": 1,
+        "event_class": "D"
+    },
+    {
+        "id": 23445,
+        "address": {
+            "id": 6177,
+            "text": null,
+            "district": null,
+            "latitude": "59.913368",
+            "longtitude": "30.316990",
+            "eas_address": null,
+            "eas_bulding": null
+        },
+        "author": {
+            "id": 3,
+            "name": null,
+            "second_name": null,
+            "father_name": null,
+            "date": "2020-11-14"
+        },
+        "text": "adsdasd",
+        "date": "2019-01-01T05:00:49Z",
+        "danger_level": 1,
+        "event_class": "D"
+    }
+]
