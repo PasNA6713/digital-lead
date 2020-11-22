@@ -4,13 +4,13 @@
             <v-col cols="3">
                 <div class="menu">
                     <v-col>
-                        <a v-bind:class="{ 'red--text': isActive1 }" @click.prevent="getComplaints">Мои жалобы</a>
+                        <a v-bind:class="{ 'red--text': isActive1 }" @click="getComplaints">Мои жалобы</a>
                     </v-col>
                     <v-col>
-                        <a v-bind:class="{ 'red--text': isActive2 }" @click.prevent="getOffers">Мои предложения</a>
+                        <a v-bind:class="{ 'red--text': isActive2 }" @click="getOffers">Мои предложения</a>
                     </v-col>
                     <v-col>
-                        <a>Избранное</a>
+                        <a v-bind:class="{ 'red--text': isActive3 }" @click="getOffers2">Избранное</a>
                     </v-col>
                 </div>
             </v-col>
@@ -31,37 +31,53 @@ export default {
     data: () => ({
         reports: [],
         isActive1: true,
-        isActive2: false
+        isActive2: false,
+        isActive3: false,
     }),
 
     mounted() {
         axios({
             method: 'GET',
-            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=T&author=6'
+            url: 'http://127.0.0.1:8000/message/get/?event=T&author=6'
         }).then(response => {
             this.reports = response.data.data
         })
     },
     methods: {
         getComplaints(){
-            this.isActive1 = true
             this.isActive2 = false
+            this.isActive3 = false
+            this.isActive1 = true
             axios({
-            method: 'GET',
-            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=T&author=6'
-        }).then(response => {
-            this.reports = response.data.data
-        })
+                method: 'GET',
+                url: 'http://127.0.0.1:8000/message/get/?event=T&author=6'
+            }).then(response => {
+                this.reports = response.data.data
+            })
         },
+
         getOffers(){
             this.isActive1 = false
+            this.isActive3 = false
             this.isActive2 = true
             axios({
-            method: 'GET',
-            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=Y&author=6'
-        }).then(response => {
-            this.reports = response.data.data
-        })
+                method: 'GET',
+                url: 'http://127.0.0.1:8000/message/get/?event=Y&author=6'
+            }).then(response => {
+                this.reports = response.data.data
+            })
+        },
+
+        getOffers2(){
+            this.isActive1 = false
+            this.isActive2 = false
+            this.isActive3 = true
+                axios({
+                method: 'GET',
+                url: 'http://127.0.0.1:8000/message/get/?event=CW&author=6'
+            }).then(response => {
+                this.reports = response.data.data
+            })
         }
     }
 }

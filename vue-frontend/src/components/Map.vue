@@ -78,7 +78,7 @@
                     objects.forEach(element => {
                         axios({
                             method: 'GET',
-                            url: `https://fc9752e33a86.ngrok.io/message/get/${element.id}/`
+                            url: `http://127.0.0.1:8000/message/get/${element.id}/`
                         }).then(response => {
                             this.reports.push(response.data)
                         })
@@ -87,7 +87,7 @@
                 else {
                     axios({
                             method: 'GET',
-                            url: `https://fc9752e33a86.ngrok.io/message/get/${target}/`
+                            url: `http://127.0.0.1:8000/message/get/${target}/`
                         }).then(response => {
                             this.reports.push(response.data)
                         })
@@ -99,7 +99,7 @@
 
                     axios({
                 method: 'GET',
-                url: 'https://fc9752e33a86.ngrok.io/message/get/?date_before=2020-03-23T12:58:20.204316Z'
+                url: 'http://127.0.0.1:8000/message/get/?date_before=2020-03-23T12:58:20.204316Z'
             }).then(response => {
                 this.reports = response.data.data
                 for (let i=0;i<this.reports.length;i++){

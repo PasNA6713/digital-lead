@@ -27,33 +27,6 @@
     </div>
 </template>
 
-<style scoped>
-    .first-header-filter{
-        margin-left: 60px;
-    }
-    .header-filter{
-        margin-left: 350px;
-    }
-    .first-header-filter, .header-filter{
-        font-family: Century Gothic;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 20px;
-        line-height: 25px;
-    }
-    .filter-block{
-        margin-top: 50px;
-    }
-    .autocomplete-block{
-        margin-left: 60px;
-        margin-bottom: 30px;
-    }
-    .autocomplete-item{
-        margin-right: 100px;
-        max-width: 300px;
-    }
-</style>
-
 <script>
 import Map from '../components/Map'
 
@@ -63,7 +36,26 @@ export default {
         Map
     },
     data: () => ({
-        districts: [],
+        districts: [
+            'Выборгский район',
+            'Московский район',
+            'Петродворцовый район',
+            'Курортный район',
+            'Приморский район',
+            'Пушкинский район',
+            'Петроградский район',
+            'Василеостровский район',
+            'Красносельский район',
+            'Невский район',
+            'Центральный район',
+            'Адмиралтейский район',
+            'Фрунзенская район',
+            'Калининский район',
+            'Кировский район',
+            'Кронштадтский район',
+            'Колпинский район',
+            'Красногвардейский район'
+        ],
         date: [],
         eventClass: [],
         used: [false, false, false],
@@ -115,4 +107,32 @@ export default {
     }
 }
 </script>
+
+
+<style scoped>
+    .first-header-filter{
+        margin-left: 60px;
+    }
+    .header-filter{
+        margin-left: 350px;
+    }
+    .first-header-filter, .header-filter{
+        font-family: Century Gothic;
+        font-style: normal;
+        font-weight: normal;
+        font-size: 20px;
+        line-height: 25px;
+    }
+    .filter-block{
+        margin-top: 50px;
+    }
+    .autocomplete-block{
+        margin-left: 60px;
+        margin-bottom: 30px;
+    }
+    .autocomplete-item{
+        margin-right: 100px;
+        max-width: 300px;
+    }
+</style>
 

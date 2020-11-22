@@ -14,7 +14,7 @@ SECRET_KEY = os.getenv("SECRET_KEY")
 
 DEBUG = True
 
-ALLOWED_HOSTS = ['127.0.0.1', '9d8b7f059f8b.ngrok.io']
+ALLOWED_HOSTS = ['127.0.0.1', 'fc9752e33a86.ngrok.io']
 
 INSTALLED_APPS = [
     'django.contrib.admin',

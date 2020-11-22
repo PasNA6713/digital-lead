@@ -2,17 +2,20 @@
     <v-card class="mr-3 my-4 pb-6">
         <v-card-title justify="space-between">
             <v-row justify="space-between" class="px-3 text">
-                <p>Предложение от пользователя:
-                    <b class="ml-3">{{data.author.name}}</b>
-                    <b class="ml-3">{{data.author.second_name}}</b>
-                </p>
+                <v-row>
+                    <p v-if="isLikable">Предложение от пользователя:</p>
+                    <p>
+                        <b class="ml-3">{{data.author.name}}</b>
+                        <b class="ml-3">{{data.author.second_name}}</b>
+                    </p>
+                </v-row>
                 {{data.date}}
             </v-row>
         </v-card-title>
 
         <v-card-text class="text" style="font-size: 14px">{{data.text}}</v-card-text>
 
-        <v-btn style="position: absolute; right: 20px; bottom: 10px;"
+        <v-btn v-if="isLikable" style="position: absolute; right: 20px; bottom: 10px;"
             class="mx-2"
             rounded
             dark
@@ -31,7 +34,7 @@
 
 <script>
 export default {
-    props: ['data'],
+    props: ['data', 'isLikable'],
 
     data() {
         return {

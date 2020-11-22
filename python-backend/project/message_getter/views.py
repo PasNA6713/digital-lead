@@ -28,8 +28,8 @@ class UpdateAddressView(UpdateAPIView):
 # Upload File and check it
 class UploadPhotoView(APIView):
     def post(self, request, format=None):
-        get_file(request.FILES['file'])
-        return Response(status=status.HTTP_200_OK)
+        r = get_file(request.FILES['file'])
+        return Response(r, status=status.HTTP_200_OK)
 
 # User methods
 class CreateUserView(CreateAPIView):

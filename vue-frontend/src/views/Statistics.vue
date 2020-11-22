@@ -10,7 +10,7 @@
         </v-col>
 
         <v-col cols="8" class="p-3 pr-6">
-            <Report v-for="i in reports" :key="i.text" :data="i"/>
+            <Report :isLikable="true" v-for="i in reports" :key="i.text" :data="i"/>
         </v-col>
     </v-row>
 </div>

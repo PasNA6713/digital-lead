@@ -14,14 +14,13 @@
 
       <v-text-field
         v-model="phone"
-        label="Номер телефона"
+        label="Логин"
         type="phone"
         required
       ></v-text-field>
 
       <v-text-field
         v-model="password"
-        :rules="passwordRules"
         label="Пароль"
         type="password"
         required
