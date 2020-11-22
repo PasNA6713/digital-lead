@@ -9,14 +9,6 @@
             :controls="['zoomControl']"
             @map-was-initialized="getMapInstance"
         >
-            <!-- <ymap-marker 
-            :key="marker.id"
-            v-for="marker in placemarks" 
-            :coords="marker.coords" 
-            marker-id="marker.id" 
-            hint-content="marker.id"
-            @click="onClick"
-            /> -->
         </yandex-map>
         <br>
     </div>
@@ -27,6 +19,7 @@
     import dataset from '../assets/dataset.json'
 
     export default{
+        props: ["isNeedRefresh", "dynamicFilter"],
         components: {
             yandexMap, 
             ymapMarker
@@ -41,6 +34,7 @@
             },
             mapCenter: [59.9370, 30.3089],
 
+            filter: [],
             currentMap: null,
             objectManager: null,
             placemarks: [],
@@ -49,7 +43,7 @@
                 1: 'yellow',
                 2: 'blue',
                 3: 'red'
-            }
+            },
         }),
 
         methods: {
@@ -75,11 +69,12 @@
                 } catch (error) {
                     console.log(error)
                 }
+                this.$emit('for-autocomplete', this.filter)
             }
         }
     },
     mounted(){
-        // Получение json и преобразование в валидные маркеры для карты
+        // Получение json (запрос на сервер) и преобразование в валидные маркеры для карты
         for (let i=0;i<dataset.length;i++){
             let mapMarker = {
                             type: 'Feature',
@@ -98,16 +93,87 @@
                             }
             }
             this.placemarks.push(mapMarker)
+            this.filter.push(
+                {
+                    "id": dataset[i]["id"],
+                    "district": dataset[i].address["district"],
+                    "event_class": dataset[i]["event_class"],
+                    "date": dataset[i]["date"]
+                })
         }
 
+    },
+
+    watch: {
+        isNeedRefresh: function(newIsNeedRefresh, oldIsNeedRefresh){
+            if (newIsNeedRefresh){
+                
+                let myFilter = this.dynamicFilter
+                let filteredPlacemarks = []
+                
+                if (myFilter[0].length == 0){
+                    for(let i=0;i<this.filter.length;i++)
+                    {
+                        myFilter[0].push(this.filter[i]["district"])
+                    }
+                }
+
+                if (myFilter[1].length == 0){
+                    for(let i=0;i<this.filter.length;i++)
+                    {
+                        myFilter[1].push(this.filter[i]["date"])
+                    }
+                }
+
+                if (myFilter[2].length == 0){
+                    for(let i=0;i<this.filter.length;i++)
+                    {
+                        myFilter[2].push(this.filter[i]["event_class"])
+                    }
+                }
+
+                // Предусмотреть повторный запрос на сервер или так и оставить из локальных данных
+                for (let i=0;i<dataset.length;i++){
+                    if (myFilter[0].includes(dataset[i].address["district"]) && 
+                        myFilter[1].includes(dataset[i]["date"]) &&
+                        myFilter[2].includes(dataset[i]["event_class"])){
+                            console.log("here")
+                        let mapMarker = {
+                                        type: 'Feature',
+                                        id: dataset[i]["id"],
+                                        geometry: {
+                                            type: 'Point',
+                                            coordinates: [dataset[i]["address"]["latitude"], dataset[i]["address"]["longtitude"]]
+                                        },
+                                        properties: {
+                                            hintContent: dataset[i]["date"],
+                                            balloonContent: dataset[i]["text"]
+                                        },
+                                        options: {
+                                            preset: "islands#dotIcon",
+                                            iconColor: this.classifier[dataset[i]["danger_level"]]
+                                        }
+                        }
+                        filteredPlacemarks.push(mapMarker)
+                    }
+                }
+
+                //console.log("filteredPlacemarks", filteredPlacemarks)
+                
+                this.objectManager.removeAll()
+                this.objectManager.add(filteredPlacemarks)
+                
+                this.$emit('refreshed')
+            }
+        }
     }
 }
 </script>
 
 <style scoped>
 #map{
-    width: 800px; 
-    height: 660px;
-    margin-left: 30px;
+    width: 400px; 
+    height: 400px;
+    margin-left: 60px;
 }
 </style>
