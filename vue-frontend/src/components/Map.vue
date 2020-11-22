@@ -9,22 +9,12 @@
                     :zoom="10" 
                     :use-object-manager="true"
                     :controls="['zoomControl']"
-                    @click.prevent="onClick"
                     @map-was-initialized="getMapInstance"
                 >
                 </yandex-map>
             </v-col>
-            <v-col cols="6" class="p-2 pr-7 report-col" v-if="isShow">
-                <report class="report-msg"
-                v-for="(report, index) in reports"
-                :key="index"
-                :data="reports[index]"
-                />
-                <!-- <v-pagination
-                    v-model="page"
-                    :length="76"
-                    :total-visible="7"
-                ></v-pagination> -->
+            <v-col cols="6" class="p-2 pr-7 report-col">
+                <report class="report-msg" :isLikable="true" v-for="(i, index) in reports" :key="index" :data="i"/>
             </v-col>
         </v-row>
         <br>
@@ -33,7 +23,6 @@
 
 <script>
     import { yandexMap, ymapMarker } from 'vue-yandex-maps'
-    import dataset from '../assets/dataset.json'
     import Report from '../components/report.vue'
 
     export default{
@@ -51,6 +40,7 @@
                 coordorder: 'latlong',
                 version: '2.1'
             },
+
             mapCenter: [59.9370, 30.3089],
             isShow: false,
             filter: [],
@@ -75,36 +65,64 @@
                 'Нарушение водоснабжения',
                 'Нарушение электроснабжения'
             ],
-            reports: [
-                {
-                    name: 'Пастухов Никита',
-                    date: '22.11.2020',
-                    text: 'На ул. Тотмина города Тосно дорожное покрытие частично отсутствует, отсутствует дренаж, пешеходные тротуары, плиты разбиты, торчит арматура, асфальт в выбоинах и ямах.',
-                    likes: '127'
-                }
-                // {
-                //     name: 'Алексей Иванов',
-                //     date: '21.11.2020',
-                //     text: 'Состояние железнодорожного переезда не соответствует никаким нормам!!! Ямы местное население вынуждено закладывать кирпичами. На мое телефонное обращение никакой реакции не последовало. Проблема никак не решается в течении нескольких лет. В летний период замедленный проезд данного переезда приводит к многочасовым пробкам!',
-                //     likes: '234'
-                // },
-                // {
-                //     name: 'Евгения Малышева',
-                //     date: '20.11.2020',
-                //     text: 'Здравствуйте!Уже не первый раз пишем жалобы в управляющую компанию \"Солнечный\" об отвратительной уборке. Невозможно выехать из двора, пройти с коляской, я уже молчу о пожилых людях, которым очень тяжело пройти. Перестали посыпать песком, хотя вокруг много домов строится и песка точно много. Около самого управления конечно же чисто, а чем хуже мы? Мы платим деньги и при этом постоянно пишем про ужасную уборку, ходим жалуемся. Очень просим помочь, чтобы уборка была надлежащей!',
-                //     likes: '366'
-                // }
-            ],
-            page: 1,
+            reports: [],
         }),
 
         methods: {
-            onClick(e) {
-                this.isShow = true
-        },
+            onClick(e){
+                this.reports = []
+                let target = e.get('objectId');
+
+                if (this.objectManager.clusters.getById(target)) {
+                    let objects = this.objectManager.clusters.getById(target).properties.geoObjects
+                    objects.forEach(element => {
+                        axios({
+                            method: 'GET',
+                            url: `https://fc9752e33a86.ngrok.io/message/get/${element.id}/`
+                        }).then(response => {
+                            this.reports.push(response.data)
+                        })
+                    });
+                }
+                else {
+                    axios({
+                            method: 'GET',
+                            url: `https://fc9752e33a86.ngrok.io/message/get/${target}/`
+                        }).then(response => {
+                            this.reports.push(response.data)
+                        })
+                }
+            },
+
             async getMapInstance(map) {
                 if (map) {
-                try {
+
+                    axios({
+                method: 'GET',
+                url: 'https://fc9752e33a86.ngrok.io/message/get/?date_before=2020-03-23T12:58:20.204316Z'
+            }).then(response => {
+                this.reports = response.data.data
+                for (let i=0;i<this.reports.length;i++){
+                    let mapMarker = {
+                                    type: 'Feature',
+                                    id: this.reports[i]["id"],
+                                    geometry: {
+                                        type: 'Point',
+                                        coordinates: [this.reports[i]["address"]["latitude"], this.reports[i]["address"]["longtitude"]]
+                                    },
+                                    properties: {
+                                        hintContent: this.reports[i]["date"],
+                                        balloonContent: this.reports[i]["text"]
+                                    },
+                                    options: {
+                                        preset: "islands#dotIcon",
+                                        iconColor: this.classifier[this.reports[i]["danger_level"]]
+                                    }
+                    }
+                    this.placemarks.push(mapMarker)
+                    }
+
+                    try {
                     this.currentMap = map
                     this.objectManager = new ymaps.ObjectManager({
                                 clusterize: true,
@@ -123,38 +141,9 @@
                     console.log(error)
                 }
                 this.$emit('for-autocomplete', this.filter)
-            }
-        }
-    },
-    mounted(){
-        // Получение json (запрос на сервер) и преобразование в валидные марк/еры для карты
-        for (let i=0;i<dataset.length;i++){
-            let mapMarker = {
-                            type: 'Feature',
-                            id: dataset[i]["id"],
-                            geometry: {
-                                type: 'Point',
-                                coordinates: [dataset[i]["address"]["latitude"], dataset[i]["address"]["longtitude"]]
-                            },
-                            properties: {
-                                hintContent: dataset[i]["date"],
-                                balloonContent: dataset[i]["text"]
-                            },
-                            options: {
-                                preset: "islands#dotIcon",
-                                iconColor: this.classifier[dataset[i]["danger_level"]]
-                            }
-            }
-            this.placemarks.push(mapMarker)
-            this.filter.push(
-                {
-                    "id": dataset[i]["id"],
-                    "district": dataset[i].address["district"],
-                    "event_class": dataset[i]["event_class"],
-                    "date": dataset[i]["date"]
                 })
+            }
         }
-
     },
 
     watch: {
@@ -186,25 +175,25 @@
                 }
 
                 // Предусмотреть повторный запрос на сервер или так и оставить из локальных данных
-                for (let i=0;i<dataset.length;i++){
-                    if (myFilter[0].includes(dataset[i].address["district"]) && 
-                        myFilter[1].includes(dataset[i]["date"]) &&
-                        myFilter[2].includes(dataset[i]["event_class"])){
+                for (let i=0;i<reports.length;i++){
+                    if (myFilter[0].includes(reports[i].address["district"]) && 
+                        myFilter[1].includes(reports[i]["date"]) &&
+                        myFilter[2].includes(reports[i]["event_class"])){
                             console.log("here")
                         let mapMarker = {
                                         type: 'Feature',
-                                        id: dataset[i]["id"],
+                                        id: reports[i]["id"],
                                         geometry: {
                                             type: 'Point',
-                                            coordinates: [dataset[i]["address"]["latitude"], dataset[i]["address"]["longtitude"]]
+                                            coordinates: [reports[i]["address"]["latitude"], reports[i]["address"]["longtitude"]]
                                         },
                                         properties: {
-                                            hintContent: dataset[i]["date"],
-                                            balloonContent: dataset[i]["text"]
+                                            hintContent: reports[i]["date"],
+                                            balloonContent: reports[i]["text"]
                                         },
                                         options: {
                                             preset: "islands#dotIcon",
-                                            iconColor: this.classifier[dataset[i]["danger_level"]]
+                                            iconColor: this.classifier[reports[i]["danger_level"]]
                                         }
                         }
                         filteredPlacemarks.push(mapMarker)
@@ -236,4 +225,3 @@
         margin-bottom: 30px;
     }
 </style>
-
