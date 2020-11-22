@@ -4,7 +4,7 @@
         "address": {
             "id": 22,
             "text": null,
-            "district": "Площадь Ленина",
+            "district": "Выборгский район",
             "latitude": "59.825946",
             "longtitude": "30.391093",
             "eas_address": null,
@@ -27,7 +27,7 @@
         "address": {
             "id": 23,
             "text": null,
-            "district": "Площадь Ленина",
+            "district": "Московский район",
             "latitude": "59.906850",
             "longtitude": "30.463027",
             "eas_address": null,
@@ -50,7 +50,7 @@
         "address": {
             "id": 24,
             "text": null,
-            "district": "Невский проспект",
+            "district": "Петродворцовый район",
             "latitude": "60.000565",
             "longtitude": "30.393666",
             "eas_address": null,
@@ -73,7 +73,7 @@
         "address": {
             "id": 25,
             "text": null,
-            "district": "Невский проспект",
+            "district": "Курортный район",
             "latitude": "59.913223",
             "longtitude": "30.327589",
             "eas_address": null,
@@ -96,7 +96,7 @@
         "address": {
             "id": 26,
             "text": null,
-            "district": null,
+            "district": "Приморский район",
             "latitude": "60.035892",
             "longtitude": "30.429481",
             "eas_address": null,
@@ -119,7 +119,7 @@
         "address": {
             "id": 27,
             "text": null,
-            "district": null,
+            "district": "Пушкинский район",
             "latitude": "59.954833",
             "longtitude": "30.298786",
             "eas_address": null,
@@ -142,7 +142,7 @@
         "address": {
             "id": 30,
             "text": null,
-            "district": null,
+            "district": "Петроградский район",
             "latitude": "59.740638",
             "longtitude": "30.568335",
             "eas_address": null,
@@ -165,7 +165,7 @@
         "address": {
             "id": 31,
             "text": null,
-            "district": null,
+            "district": "Василеостровский район",
             "latitude": "60.073198",
             "longtitude": "30.329606",
             "eas_address": null,
@@ -188,7 +188,7 @@
         "address": {
             "id": 32,
             "text": null,
-            "district": null,
+            "district": "Красносельский район",
             "latitude": "60.016042",
             "longtitude": "30.365004",
             "eas_address": null,
@@ -211,7 +211,7 @@
         "address": {
             "id": 33,
             "text": null,
-            "district": null,
+            "district": "Невский район",
             "latitude": "59.946732",
             "longtitude": "30.352607",
             "eas_address": null,
@@ -234,7 +234,7 @@
         "address": {
             "id": 34,
             "text": null,
-            "district": null,
+            "district": "Центральный район",
             "latitude": "59.956285",
             "longtitude": "30.320706",
             "eas_address": null,
@@ -257,7 +257,7 @@
         "address": {
             "id": 35,
             "text": null,
-            "district": null,
+            "district": "Адмиралтейский район",
             "latitude": "60.027615",
             "longtitude": "30.419584",
             "eas_address": null,
@@ -280,7 +280,7 @@
         "address": {
             "id": 36,
             "text": null,
-            "district": null,
+            "district": "Фрунзенская район",
             "latitude": "60.024248",
             "longtitude": "30.272533",
             "eas_address": null,
@@ -303,7 +303,7 @@
         "address": {
             "id": 37,
             "text": null,
-            "district": null,
+            "district": "Калининский район",
             "latitude": "60.072571",
             "longtitude": "30.328493",
             "eas_address": null,
@@ -326,7 +326,7 @@
         "address": {
             "id": 38,
             "text": null,
-            "district": null,
+            "district": "Кировский район",
             "latitude": "59.738579",
             "longtitude": "30.614398",
             "eas_address": null,
@@ -349,7 +349,7 @@
         "address": {
             "id": 39,
             "text": null,
-            "district": null,
+            "district": "Кронштадтский район",
             "latitude": "59.834824",
             "longtitude": "30.427608",
             "eas_address": null,
@@ -372,7 +372,7 @@
         "address": {
             "id": 40,
             "text": null,
-            "district": null,
+            "district": "Колпинский район",
             "latitude": "59.803100",
             "longtitude": "30.146200",
             "eas_address": null,
@@ -395,7 +395,7 @@
         "address": {
             "id": 41,
             "text": null,
-            "district": null,
+            "district": "Красногвардейский район",
             "latitude": "59.897905",
             "longtitude": "30.489831",
             "eas_address": null,
