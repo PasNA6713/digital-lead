@@ -1,15 +1,32 @@
 <template>
     <div>
         <br>
-        <yandex-map  id="map"
-            :settings="settings"
-            :coords="mapCenter"
-            :zoom="10" 
-            :use-object-manager="true"
-            :controls="['zoomControl']"
-            @map-was-initialized="getMapInstance"
-        >
-        </yandex-map>
+        <v-row>
+            <v-col cols="4">
+                <yandex-map  id="map"
+                    :settings="settings"
+                    :coords="mapCenter"
+                    :zoom="10" 
+                    :use-object-manager="true"
+                    :controls="['zoomControl']"
+                    @click.prevent="onClick"
+                    @map-was-initialized="getMapInstance"
+                >
+                </yandex-map>
+            </v-col>
+            <v-col cols="6" class="p-2 pr-7 report-col" v-if="isShow">
+                <report class="report-msg"
+                v-for="(report, index) in reports"
+                :key="index"
+                :data="reports[index]"
+                />
+                <!-- <v-pagination
+                    v-model="page"
+                    :length="76"
+                    :total-visible="7"
+                ></v-pagination> -->
+            </v-col>
+        </v-row>
         <br>
     </div>
 </template>
@@ -17,12 +34,14 @@
 <script>
     import { yandexMap, ymapMarker } from 'vue-yandex-maps'
     import dataset from '../assets/dataset.json'
+    import Report from '../components/report.vue'
 
     export default{
         props: ["isNeedRefresh", "dynamicFilter"],
         components: {
             yandexMap, 
-            ymapMarker
+            ymapMarker,
+            Report
         },
 
         data: () => ({
@@ -33,7 +52,7 @@
                 version: '2.1'
             },
             mapCenter: [59.9370, 30.3089],
-
+            isShow: false,
             filter: [],
             currentMap: null,
             objectManager: null,
@@ -44,11 +63,44 @@
                 2: 'blue',
                 3: 'red'
             },
+            classes: [
+                'Дтп',
+                'Пожар',
+                'Свалка',
+                'Загрязнение водоемов',
+                'Дороги',
+                'Благоустройство домов',
+                'Благоустройство дворов',
+                'Благоустройство придомовых территорий',
+                'Нарушение водоснабжения',
+                'Нарушение электроснабжения'
+            ],
+            reports: [
+                {
+                    name: 'Пастухов Никита',
+                    date: '22.11.2020',
+                    text: 'На ул. Тотмина города Тосно дорожное покрытие частично отсутствует, отсутствует дренаж, пешеходные тротуары, плиты разбиты, торчит арматура, асфальт в выбоинах и ямах.',
+                    likes: '127'
+                }
+                // {
+                //     name: 'Алексей Иванов',
+                //     date: '21.11.2020',
+                //     text: 'Состояние железнодорожного переезда не соответствует никаким нормам!!! Ямы местное население вынуждено закладывать кирпичами. На мое телефонное обращение никакой реакции не последовало. Проблема никак не решается в течении нескольких лет. В летний период замедленный проезд данного переезда приводит к многочасовым пробкам!',
+                //     likes: '234'
+                // },
+                // {
+                //     name: 'Евгения Малышева',
+                //     date: '20.11.2020',
+                //     text: 'Здравствуйте!Уже не первый раз пишем жалобы в управляющую компанию \"Солнечный\" об отвратительной уборке. Невозможно выехать из двора, пройти с коляской, я уже молчу о пожилых людях, которым очень тяжело пройти. Перестали посыпать песком, хотя вокруг много домов строится и песка точно много. Около самого управления конечно же чисто, а чем хуже мы? Мы платим деньги и при этом постоянно пишем про ужасную уборку, ходим жалуемся. Очень просим помочь, чтобы уборка была надлежащей!',
+                //     likes: '366'
+                // }
+            ],
+            page: 1,
         }),
 
         methods: {
             onClick(e) {
-                this.placemarks = e.get('coords');
+                this.isShow = true
         },
             async getMapInstance(map) {
                 if (map) {
@@ -62,6 +114,7 @@
                         try {
                             this.objectManager.add(this.placemarks)
                             this.currentMap.geoObjects.add(this.objectManager)
+                            this.currentMap.geoObjects.events.add('click', this.onClick)
                         } catch (error) {
                             console.log('no placemarks!')
                         }
@@ -74,7 +127,7 @@
         }
     },
     mounted(){
-        // Получение json (запрос на сервер) и преобразование в валидные маркеры для карты
+        // Получение json (запрос на сервер) и преобразование в валидные марк/еры для карты
         for (let i=0;i<dataset.length;i++){
             let mapMarker = {
                             type: 'Feature',
@@ -165,15 +218,22 @@
                 
                 this.$emit('refreshed')
             }
-        }
+        },
     }
 }
 </script>
 
 <style scoped>
-#map{
-    width: 400px; 
-    height: 400px;
-    margin-left: 60px;
-}
+    #map{
+        width: 800px; 
+        height: 800px;
+        margin-left: 60px;
+    }
+    .report-col{
+        margin-left: 300px;
+    }
+    .report-msg{
+        margin-bottom: 30px;
+    }
 </style>
+
