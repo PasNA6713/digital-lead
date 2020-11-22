@@ -1,5 +1,7 @@
 <template>
 <div>
+    <chart />
+
     <v-row justify="center">
         <v-col cols="4">
             <districts :states="dist" label="Укажите свой район"/>
@@ -8,8 +10,8 @@
             <day-statistics class="ml-2"/>
         </v-col>
 
-        <v-col cols="8">
-            <chart />
+        <v-col cols="8" class="p-3 pr-6">
+            <report :data="reports[0]"/>
         </v-col>
     </v-row>
 </div>
@@ -18,8 +20,9 @@
 <script>
 import Vue from 'vue'
 import DayStatistics from '../components/Statistics/DailyCalendar.vue'
-import chart from '../components/Statistics/custom_chart.vue'
+import chart from '../components/Statistics/chart.vue'
 import districts from '../components/autocomplete.vue'
+import Report from '../components/report.vue'
 
 export default {
     data() {
@@ -56,6 +59,15 @@ export default {
                 'Благоустройство придомовых территорий',
                 'Нарушение водоснабжения',
                 'Нарушение электроснабжения'
+            ],
+
+            reports: [
+                {
+                    name: 'Пастухов Никита',
+                    date: '1.11.2020',
+                    text: 'В результате неисправности канализационной системы в посёлке Ромашки Приозерского района Ленинградской области происходит аварийный сброс неочищенных сточных вод на грунт в пределах сельского поселения через смотровой колодец (схема на местности прилагается).Собственником объектов КОС на территории МО Ромашкинское сельское является муниципальное образование Ромашкинское сельское поселение, на основании договора аренды № 6/14 от 04.07.2014 объектов водоотведения и канализования, администрацией МО Ромашкинское сельское поселение муниципальное имущество передано в аренду ООО «Уют-Сервис плюс», генеральный директор Рискин Владимир Ефимович.Неочищенные стоки накапливаясь в районе гаражей, поступают прямо в водосточные канавы. Стоки бегут под уклон, распространяя неприятные запахи. По системе каналов стоки попадают прямо в открытый водоем (река Вуокса-Вирта), откуда происходит водозабор для нужд п. Ромашки.',
+                    likes: '3'
+                }
             ]
         }
     },
@@ -63,7 +75,8 @@ export default {
     components: {
         DayStatistics,
         districts,
-        chart
+        chart,
+        Report
     },
 }
 </script>

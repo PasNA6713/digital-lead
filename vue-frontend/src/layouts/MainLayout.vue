@@ -1,7 +1,7 @@
 <template>
     <div id="main-layout">
         <Navbar @click="isOpen = !isOpen"/>
-            <router-view />
+            <router-view class="mb-8"/>
         <Footer />
     </div>
 </template>
