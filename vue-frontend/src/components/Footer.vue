@@ -2,7 +2,7 @@
     <v-footer
       dark
       padless
-      fixed
+      style="position: absolute; bottom:0; width: 100%"
     >
       <v-card
         class="flex"

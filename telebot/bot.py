@@ -45,6 +45,10 @@ def catch_user(func):
     return decor
 
 
+@bot.message_handler(commands=['start'])
+def send_welcome(message):
+	bot.reply_to(message, "Добрый день! Бот по приему жалоб готов вам помочь!")
+
 @bot.message_handler(func=lambda message: True)
 @catch_backend_off
 @catch_user
@@ -60,7 +64,6 @@ def send_welcome(message, user):
     response = json.loads(r.content)
     cl = response.get("event_class")
     users_last_message_address_id[user.get('id')] = response.get("address")
-    logger.debug(cl)
     if cl == "D": cl = "Дтп"
     elif cl == "F": cl = "Пожар"
     elif cl == "WS": cl = "Нарушение водоснабжения"
@@ -119,8 +122,18 @@ def photo_processing(message, user):
     file = {
         'file': to_send
     }
-    requests.post(f'{BACKEND}message/photo/', headers=headers, files=file)
-    bot.reply_to(message, 'Спасибо за обращение, оно поможет сделать город лучше!')
+    r = requests.post(f'{BACKEND}message/photo/', headers=headers, files=file)
+    response = json.loads(r.content)
+    cl = response.get("event_class")
+    users_last_message_address_id[user.get('id')] = response.get("address")
+    if cl == "D": cl = "Дтп"
+    elif cl == "F": cl = "Пожар"
+    elif cl == "WS": cl = "Нарушение водоснабжения"
+    elif cl == "T": cl = "Мусор"
+    elif cl == "L": cl = "Сбой электросети"
+    elif cl == "LR": cl = "Загрязнение водоемов"
+    elif cl == "R": cl = "Дороги"
+    bot.reply_to(message, f'Ваше сообщение класса: {cl}\nПринято!\n\nПожалуйста, напишите адрес или прикрепите геопозицию!')
 
 
 bot.polling()

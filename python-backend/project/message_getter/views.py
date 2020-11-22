@@ -54,7 +54,7 @@ class CreateMessageView(CreateAPIView):
     serializer_class = CreateMessageSerializer
 
 class GetMessageView(RetrieveAPIView):
-    queryset = MessageModel.objects.all()
+    queryset = MessageModel.objects.all().order_by('-date')
     serializer_class = GetMessageSerializer
 
 class DeleteMessageView(DestroyAPIView):
