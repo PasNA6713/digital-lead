@@ -3,39 +3,78 @@
         <v-row>
             <v-col cols="3">
                 <div class="menu">
-                    
-                    <h4 class="text-decoration-underline">Мои жалобы</h4>
-                    <br>
-                    <h4>Мои предложения</h4>
-                    <br>
-                    <h4>Избранное</h4>
+                    <v-col>
+                        <a v-bind:class="{ 'red--text': isActive1 }" @click.prevent="getComplaints">Мои жалобы</a>
+                    </v-col>
+                    <v-col>
+                        <a v-bind:class="{ 'red--text': isActive2 }" @click.prevent="getOffers">Мои предложения</a>
+                    </v-col>
+                    <v-col>
+                        <a>Избранное</a>
+                    </v-col>
                 </div>
             </v-col>
-            <v-col cols="8" class="p-2 pr-7 report-col">
-                <div class="divider"></div>
-                <offer class="report-msg"
-                            v-for="(report, index) in reports"
-                            :key="index"
-                            :data="reports[index]"/>
-                <v-pagination
-                    v-model="page"
-                    :length="4"
-                    :total-visible="4"
-                ></v-pagination>
-                <div class="divider"></div>
+            <v-col cols="8" class="p-3 pr-6">
+                <report :isLikable="false" v-for="i in reports" :key="i.text" :data="i"/>
             </v-col>
         </v-row>
     </div>
 </template>
 
+<script>
+import report from '../components/report.vue'
+
+export default {
+    components: {
+      report
+    },
+    data: () => ({
+        reports: [],
+        isActive1: true,
+        isActive2: false
+    }),
+
+    mounted() {
+        axios({
+            method: 'GET',
+            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=T&author=6'
+        }).then(response => {
+            this.reports = response.data.data
+        })
+    },
+    methods: {
+        getComplaints(){
+            this.isActive1 = true
+            this.isActive2 = false
+            axios({
+            method: 'GET',
+            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=T&author=6'
+        }).then(response => {
+            this.reports = response.data.data
+        })
+        },
+        getOffers(){
+            this.isActive1 = false
+            this.isActive2 = true
+            axios({
+            method: 'GET',
+            url: 'https://fc9752e33a86.ngrok.io/message/get/?event=Y&author=6'
+        }).then(response => {
+            this.reports = response.data.data
+        })
+        }
+    }
+}
+</script>
+
 <style scoped>
-    .h4{
+    a{
         font-family: Century Gothic;
-        font-style: normal;
-        font-weight: normal;
-        font-size: 20px;
+        font-size: 30px;
         line-height: 25px;
         padding-bottom: 40px;
+        font-weight: 900;
+        padding-top: 30px;
     }
     .menu{
         padding-top: 80px;
@@ -48,36 +87,3 @@
         margin-top: 50px;
     }
 </style>
-
-<script>
-import Offer from '../components/offer.vue'
-
-export default {
-    components: {
-      Offer  
-    },
-    data: () => ({
-        reports: [
-                {
-                    name: 'Пастухов Никита',
-                    date: '01.11.2020',
-                    text: 'В результате неисправности канализационной системы в посёлке Ромашки Приозерского района Ленинградской области происходит аварийный сброс неочищенных сточных вод на грунт в пределах сельского поселения через смотровой колодец (схема на местности прилагается).Собственником объектов КОС на территории МО Ромашкинское сельское является муниципальное образование Ромашкинское сельское поселение, на основании договора аренды № 6/14 от 04.07.2014 объектов водоотведения и канализования, администрацией МО Ромашкинское сельское поселение муниципальное имущество передано в аренду ООО «Уют-Сервис плюс», генеральный директор Рискин Владимир Ефимович.Неочищенные стоки накапливаясь в районе гаражей, поступают прямо в водосточные канавы. Стоки бегут под уклон, распространяя неприятные запахи. По системе каналов стоки попадают прямо в открытый водоем (река Вуокса-Вирта), откуда происходит водозабор для нужд п. Ромашки.',
-                    likes: '127'
-                },
-                {
-                    name: 'Алексей Иванов',
-                    date: '12.10.2020',
-                    text: 'Состояние железнодорожного переезда не соответствует никаким нормам!!! Ямы местное население вынуждено закладывать кирпичами. На мое телефонное обращение никакой реакции не последовало. Проблема никак не решается в течении нескольких лет. В летний период замедленный проезд данного переезда приводит к многочасовым пробкам!',
-                    likes: '234'
-                },
-                {
-                    name: 'Евгения Малышева',
-                    date: '24.09.2020',
-                    text: 'Здравствуйте!Уже не первый раз пишем жалобы в управляющую компанию \"Солнечный\" об отвратительной уборке. Невозможно выехать из двора, пройти с коляской, я уже молчу о пожилых людях, которым очень тяжело пройти. Перестали посыпать песком, хотя вокруг много домов строится и песка точно много. Около самого управления конечно же чисто, а чем хуже мы? Мы платим деньги и при этом постоянно пишем про ужасную уборку, ходим жалуемся. Очень просим помочь, чтобы уборка была надлежащей!',
-                    likes: '366'
-                }
-            ],
-            page: 1,
-    })
-}
-</script>
