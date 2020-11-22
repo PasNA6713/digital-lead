@@ -65,13 +65,13 @@ class CreateMessageSerializer(serializers.ModelSerializer):
     address = serializers.SlugRelatedField(slug_field="id", read_only=True)
 
     danger_level = serializers.ReadOnlyField()
-    event_class = serializers.CharField()
+    event_class = serializers.ReadOnlyField()
 
     def create(self, validated_data):
         ModelClass = self.Meta.model
         if 'addr' in validated_data:
             validated_data['address'] = validated_data.pop('addr')
-        # validated_data['event_class'] = Ml.classify(validated_data.get('text'))
+        validated_data['event_class'] = Ml.classify(validated_data.get('text'))
         validated_data['danger_level'] = Ml.get_danger_level(validated_data.get('text'))
         instance = ModelClass._default_manager.create(**validated_data)
         return instance
